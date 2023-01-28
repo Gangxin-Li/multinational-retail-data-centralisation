@@ -1,6 +1,7 @@
 import yaml
 import psycopg2
-
+from sqlalchemy import create_engine
+from sqlalchemy import inspect
 #Step 4
 class DatabaseConnector:
     def __init__(self):
@@ -20,8 +21,19 @@ class DatabaseConnector:
                 #     print(table)
 
         return records
+    def upload_to_db(self,DataFrame):
+        DATABASE_TYPE = 'postgresql'
+        DBAPI = 'psycopg2'
+        HOST = 'localhost'
+        USER = 'gangxinli'
+        PASSWORD = 'gangxinli'
+        DATABASE = 'postgres'
+        PORT = 5432
+        engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}")
+        engine = engine.connect()
+        DataFrame.to_sql('dim_users',engine,if_exists='replace')
+        
 
-
-
-ins = DatabaseConnector()
-ins.init_db_engine()
+if __name__ == "__main__":
+    ins = DatabaseConnector()
+    ins.init_db_engine()

@@ -35,7 +35,7 @@ class DataCleaning():
 
         # Country
         print(table['country'].unique())
-
+        return table
 
 
 
