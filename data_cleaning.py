@@ -1,5 +1,6 @@
 from data_extraction import DataExtractor
 import pandas as pd
+from database_utils import DatabaseConnector
 class DataCleaning():
     def __init__(self) -> None:
         pass
@@ -35,37 +36,27 @@ class DataCleaning():
 
         # Country
         print(table['country'].unique())
+
+        # Upload
+        upload = DatabaseConnector()
+        upload.upload_to_db(table,'dim_users')
+        return table
+
+    def clean_card_data(self):
+
+        file = DataExtractor().retreve_pdf_data()
+        table = pd.DataFrame()
+        for item in file:
+            table = pd.concat([table, item],ignore_index=True)
+        # Upload data
+        upload = DatabaseConnector()
+        upload.upload_to_db(table,'dim_card_details')
         return table
 
 
 
-
-        # table = table.drop(index = null_values['index'])
-        # null_values = table.loc[table['first_name'] == 'NULL']
-        # print(null_values)
-
-
-
-
-        # print(table.head(10))
-        # print(type(table))
-        # List null row
-        # null_row = len(table[table.isnull().any(axis=1)])
-        # print(f"There are NULL {null_row} rows")
-        # if null_row != 0:
-        #     print("Here are the NULL rows")
-        #     print(table[table.isnull().any(axis=1)])
-        # # Check date errors
-        # table.dropna(subset=['date_of_birth'], inplace = True)
-
-        # print(len(table))
-        # table.dropna(subset=['date_of_birth'], inplace = True)
-        # print(len(table))
-        # table = table.drop([752,864])
-        # print(table[860:870])
-        # table['date_of_birth'] = pd.to_datetime(table['date_of_birth'])
-        
-        # pd.to_datetime(table['date_of_birth'], format='%Y-%M-%d', errors='raise')
-#Test
-isinstance = DataCleaning()
-isinstance.clean_user_data()
+   
+if __name__ == "__main__":
+    isinstance = DataCleaning()
+    isinstance.clean_user_data()
+    # isinstance.clean_card_data()

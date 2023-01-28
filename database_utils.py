@@ -21,19 +21,19 @@ class DatabaseConnector:
                 #     print(table)
 
         return records
-    def upload_to_db(self,DataFrame):
+    def upload_to_db(self,DataFrame,dataname):
         DATABASE_TYPE = 'postgresql'
         DBAPI = 'psycopg2'
         HOST = 'localhost'
-        USER = 'gangxinli'
+        USER = 'postgres'
         PASSWORD = 'gangxinli'
         DATABASE = 'postgres'
         PORT = 5432
         engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}")
         engine = engine.connect()
-        DataFrame.to_sql('dim_users',engine,if_exists='replace')
+        DataFrame.to_sql(dataname,engine,if_exists='replace')
         
 
 if __name__ == "__main__":
     ins = DatabaseConnector()
-    ins.init_db_engine()
+    # ins.upload_to_db()

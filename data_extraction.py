@@ -2,6 +2,7 @@ from database_utils import DatabaseConnector
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
 import pandas as pd
+import tabula
 #Step 4
 class DataExtractor:
     def list_db_tables(slef):
@@ -36,10 +37,29 @@ class DataExtractor:
         # print(table.head(10))
         return table
 
+    """
+    import tabula
 
+    # Read pdf into list of DataFrame
+    dfs = tabula.read_pdf("test.pdf", pages='all')
+
+    # Read remote pdf into list of DataFrame
+    dfs2 = tabula.read_pdf("https://github.com/tabulapdf/tabula-java/raw/master/src/test/resources/technology/tabula/arabic.pdf")
+
+    # convert PDF into CSV file
+    tabula.convert_into("test.pdf", "output.csv", output_format="csv", pages='all')
+
+    # convert all PDFs in a directory
+    tabula.convert_into_by_batch("input_directory", output_format='csv', pages='all')
+    """
+    def retreve_pdf_data(self,address='card_details.pdf'):
+        dfs = tabula.read_pdf(address,pages='all')
+        # print(dfs)
+        return dfs
 # Test
-# instance = DataExtractor()
+# instance = DataExtractor()p
 # instance.list_db_tables()
-
-isinstance = DataExtractor()
-isinstance.read_rds_table('legacy_users')
+if __name__ == "__main__":
+    isinstance = DataExtractor()
+    # isinstance.read_rds_table('legacy_users')
+    isinstance.retreve_pdf_data()
