@@ -55,10 +55,15 @@ class DataCleaning():
         upload.upload_to_db(table,'dim_card_details')
         return table
 
-
-
+    def called_clean_store_data(self):
+        store_data_instance = DataExtractor()
+        table = store_data_instance.retrieve_stores_data()
+        print(table)
+        upload = DatabaseConnector()
+        upload.upload_to_db(table,'dim_store_details')
    
 if __name__ == "__main__":
     isinstance = DataCleaning()
     # isinstance.clean_user_data()
-    isinstance.clean_card_data()
+    # isinstance.clean_card_data()
+    isinstance.called_clean_store_data()

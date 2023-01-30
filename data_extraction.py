@@ -61,8 +61,28 @@ class DataExtractor:
     def list_number_of_stores(self,):
         dictionary ={'x-api-key':'yFBQbwXe9J3sd6zWVAMrK6lcxxr0q1lr2PT6DDMX'}
         stores = requests.get('https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores',headers=dictionary)
-        print(stores)
-        print(stores.text)
+        # print(stores)
+        # print(stores.text)
+        number_stores = json.loads(stores.text)['number_stores']
+        return number_stores
+        # return json.load(stores.text)
+    def retrieve_stores_data(self,endpoint='https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/store_details'):
+        table_dict = []
+        store_number = self.list_number_of_stores()
+        dictionary ={'x-api-key':'yFBQbwXe9J3sd6zWVAMrK6lcxxr0q1lr2PT6DDMX'}
+        for num in range(store_number):
+            if num%10 == 0:
+                print(num,"/",store_number)
+            table = requests.get(f'{endpoint}/{num}',headers=dictionary)
+            content = json.loads(table.text)
+            table_dict.append(content)
+     
+        table = pd.DataFrame.from_dict(table_dict)
+        # print(table)
+        return table
+        # table = pd.DataFrame.from_dict(table.text)
+        # print(table)
+
 # Test
 # instance = DataExtractor()
 # instance.list_db_tables()
@@ -70,4 +90,5 @@ if __name__ == "__main__":
     isinstance = DataExtractor()
     # isinstance.read_rds_table('legacy_users')
     # isinstance.retreve_pdf_data()
-    isinstance.list_number_of_stores()
+    # isinstance.list_number_of_stores()
+    isinstance.retrieve_stores_data()
