@@ -37,6 +37,7 @@ class DataCleaning():
         # Country
         print(table['country'].unique())
 
+        print(table)
         # Upload
         upload = DatabaseConnector()
         upload.upload_to_db(table,'dim_users')
@@ -49,6 +50,7 @@ class DataCleaning():
         for item in file:
             table = pd.concat([table, item],ignore_index=True)
         # Upload data
+        print(table)
         upload = DatabaseConnector()
         upload.upload_to_db(table,'dim_card_details')
         return table
@@ -58,5 +60,5 @@ class DataCleaning():
    
 if __name__ == "__main__":
     isinstance = DataCleaning()
-    isinstance.clean_user_data()
-    # isinstance.clean_card_data()
+    # isinstance.clean_user_data()
+    isinstance.clean_card_data()

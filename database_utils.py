@@ -21,6 +21,7 @@ class DatabaseConnector:
                 #     print(table)
 
         return records
+
     def upload_to_db(self,DataFrame,dataname):
         DATABASE_TYPE = 'postgresql'
         DBAPI = 'psycopg2'
@@ -30,8 +31,9 @@ class DatabaseConnector:
         DATABASE = 'postgres'
         PORT = 5432
         engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}")
-        engine = engine.connect()
-        DataFrame.to_sql(dataname,engine,if_exists='replace')
+        # engine = engine.connect() 
+        
+        DataFrame.to_sql(dataname,engine,if_exists='append')
         
 
 if __name__ == "__main__":

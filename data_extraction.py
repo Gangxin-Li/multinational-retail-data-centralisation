@@ -1,8 +1,10 @@
 from database_utils import DatabaseConnector
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
+import requests
 import pandas as pd
 import tabula
+import json
 #Step 4
 class DataExtractor:
     def list_db_tables(slef):
@@ -56,10 +58,16 @@ class DataExtractor:
         dfs = tabula.read_pdf(address,pages='all')
         # print(dfs)
         return dfs
+    def list_number_of_stores(self,):
+        dictionary ={'x-api-key':'yFBQbwXe9J3sd6zWVAMrK6lcxxr0q1lr2PT6DDMX'}
+        stores = requests.get('https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores',headers=dictionary)
+        print(stores)
+        print(stores.text)
 # Test
-# instance = DataExtractor()p
+# instance = DataExtractor()
 # instance.list_db_tables()
 if __name__ == "__main__":
     isinstance = DataExtractor()
     # isinstance.read_rds_table('legacy_users')
-    isinstance.retreve_pdf_data()
+    # isinstance.retreve_pdf_data()
+    isinstance.list_number_of_stores()
