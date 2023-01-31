@@ -10,8 +10,8 @@ import boto3
 class DataExtractor:
     def list_db_tables(slef):
         database =DatabaseConnector().init_db_engine()
-        # for table in database:
-        #     print(table)
+        for table in database:
+            print(table)
         return database
 # Step 5
     def read_rds_table(self,table_name):
@@ -37,7 +37,7 @@ class DataExtractor:
         # print(names)
         # engine.execute('''SELECT * FROM legacy_users''').fetchall()
         table = pd.read_sql_table(table_name,engine)
-        # print(table.head(10))
+        print(table.head(10))
         return table
 
     """
@@ -91,15 +91,22 @@ class DataExtractor:
         s3.download_file(bucket,object,file)
         table = pd.read_csv('./products.csv')
         return table
-        
-
-# Test
-# instance = DataExtractor()
-# instance.list_db_tables()
+    def extract_from_s3_json(self):
+        #https://data-handling-public.s3.eu-west-1.amazonaws.com/date_details.json
+        s3 = boto3.client('s3')
+        bucket = 'data-handling-public'
+        object = 'date_details.json'
+        file = 'date_details.json'
+        s3.download_file(bucket,object,file)
+        table = pd.read_json('./date_details.json')
+        # print(table)
+        return table
 if __name__ == "__main__":
     isinstance = DataExtractor()
-    # isinstance.read_rds_table('legacy_users')
+    # isinstance.read_rds_table('orders_table')
+    # isinstance.list_db_tables()
     # isinstance.retreve_pdf_data()
     # isinstance.list_number_of_stores()
     # isinstance.retrieve_stores_data()
-    isinstance.extract_from_s3('s3://data-handling-public/products.csv')
+    # isinstance.extract_from_s3('s3://data-handling-public/products.csv')
+    isinstance.extract_from_s3_json()

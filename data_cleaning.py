@@ -15,7 +15,6 @@ class DataCleaning():
             print("Here are the Nan rows")
             print(nan_values)
 
-
         # NULL values
         null_values = table[table['first_name'].str.contains("NULL")]
         null_num = len(null_values)
@@ -89,10 +88,29 @@ class DataCleaning():
         upload = DatabaseConnector()
         upload.upload_to_db(table,'dim_products')
         return table
+
+    def clean_orders_data(self):
+        store_data_instance = DataExtractor()
+        table =store_data_instance.read_rds_table('orders_table')
+        # print(table.info())
+        # print(table.columns())
+        table = table.drop(columns=['first_name','last_name','1','level_0'])
+        print(table.info())
+        upload = DatabaseConnector()
+        upload.upload_to_db(table,'orders_table')
+    def clean_date_time(self):
+        store_data_instance = DataExtractor()
+        table =store_data_instance.extract_from_s3_json()
+        # Clean the data 
+        upload = DatabaseConnector()
+        upload.upload_to_db(table,'dim_date_times')
+
 if __name__ == "__main__":
     isinstance = DataCleaning()
     # isinstance.clean_user_data()
     # isinstance.clean_card_data()
     # isinstance.called_clean_store_data()
-    table = isinstance.convert_product_weights()
-    isinstance.clean_products_data(table)
+    # table = isinstance.convert_product_weights()
+    # isinstance.clean_products_data(table)
+    isinstance.clean_orders_data()
+    # isinstance.clean_date_time()
