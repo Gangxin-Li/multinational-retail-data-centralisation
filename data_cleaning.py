@@ -61,9 +61,38 @@ class DataCleaning():
         print(table)
         upload = DatabaseConnector()
         upload.upload_to_db(table,'dim_store_details')
-   
+    def convert_product_weights(self):
+        def convert_unit(x):
+            x = str(x)
+            if 'kg' == x[-2:]:
+                x = float(x[:-2]) * 1000
+                return x
+            elif 'g' == x[-1] and 'x' not in x:
+                x = float(x[:-1])
+                return x
+            elif 'g' == x[-1] and 'x' in x:
+                x = x[:-1].split('x')
+                return float(x[0]) * float(x[1])
+            else:
+                return 0
+
+        file = DataExtractor().extract_from_s3('s3://data-handling-public/products.csv')
+        # print(file)
+        # file['weight(g)'] = file['weight'].apply(lambda x:float(x[:-2])*1000 if x[-2:]=='kg' else float(x[:-1]))
+        # print(file['weight'].unique())
+        file['weight(g)'] = file['weight'].apply(convert_unit)
+        file['ml'] = file['weight'].apply(convert_unit)
+        # print(file['weight(g)'].unique())
+        return file
+    def clean_products_data(self,table):
+        # Clean the data
+        upload = DatabaseConnector()
+        upload.upload_to_db(table,'dim_products')
+        return table
 if __name__ == "__main__":
     isinstance = DataCleaning()
     # isinstance.clean_user_data()
     # isinstance.clean_card_data()
-    isinstance.called_clean_store_data()
+    # isinstance.called_clean_store_data()
+    table = isinstance.convert_product_weights()
+    isinstance.clean_products_data(table)
