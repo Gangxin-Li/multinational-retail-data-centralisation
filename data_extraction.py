@@ -5,6 +5,7 @@ import requests
 import pandas as pd
 import tabula
 import json
+import boto3
 #Step 4
 class DataExtractor:
     def list_db_tables(slef):
@@ -82,6 +83,15 @@ class DataExtractor:
         return table
         # table = pd.DataFrame.from_dict(table.text)
         # print(table)
+    def extract_from_s3(self,address):
+        s3 = boto3.client('s3')
+        bucket = 'data-handling-public'
+        object = 'products.csv'
+        file = 'products.csv'
+        s3.download_file(bucket,object,file)
+        table = pd.read_csv('./products.csv')
+        return table
+        
 
 # Test
 # instance = DataExtractor()
@@ -91,4 +101,5 @@ if __name__ == "__main__":
     # isinstance.read_rds_table('legacy_users')
     # isinstance.retreve_pdf_data()
     # isinstance.list_number_of_stores()
-    isinstance.retrieve_stores_data()
+    # isinstance.retrieve_stores_data()
+    isinstance.extract_from_s3('s3://data-handling-public/products.csv')
