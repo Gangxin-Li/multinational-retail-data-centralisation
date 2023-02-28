@@ -100,7 +100,7 @@ def extract_from_s3(self,address):
 
 ## Milestone 3
 
-- Data Cleaning
+- Data Cleaning (Part)
 
 ```python
 class DataCleaning():
@@ -159,8 +159,12 @@ class DataCleaning():
 
 ## Conclusions
 
-- Firstly, we download the data from AWS using CLI.
+- Build connections with AWS and PostgreSQL
 
-- Then we connect with 
+- Download data from AWS (RDS, S3) return as pandas table
 
-- Read through your documentation, do you understand everything you've written? Is everything clear and cohesive?
+- EDA, data cleaning, detect outliers, treate missing values.
+
+- upload the processed data to PostgreSQL
+
+- Using SQL query to search specific results.
