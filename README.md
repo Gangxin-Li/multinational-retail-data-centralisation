@@ -29,25 +29,6 @@ class DatabaseConnector:
         return records
 ```
 
-- Upload to PostgreSQL
-
-```python
-
-    def upload_to_db(self,DataFrame,dataname):
-        DATABASE_TYPE = 'postgresql'
-        DBAPI = 'psycopg2'
-        HOST = 'localhost'
-        USER = 'postgres'
-        PASSWORD = 'gangxinli'
-        DATABASE = 'postgres'
-        PORT = 5432
-        engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}")
-        # engine = engine.connect() 
-        
-        DataFrame.to_sql(dataname,engine,if_exists='append')
-        
-```
-
 ## Milestone 2
 
 - Get original data sourece
@@ -155,6 +136,25 @@ class DataCleaning():
         upload = DatabaseConnector()
         upload.upload_to_db(table,'dim_card_details')
         return table
+```
+
+- Upload to PostgreSQL
+
+```python
+
+    def upload_to_db(self,DataFrame,dataname):
+        DATABASE_TYPE = 'postgresql'
+        DBAPI = 'psycopg2'
+        HOST = 'localhost'
+        USER = 'postgres'
+        PASSWORD = 'gangxinli'
+        DATABASE = 'postgres'
+        PORT = 5432
+        engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}")
+        # engine = engine.connect() 
+        
+        DataFrame.to_sql(dataname,engine,if_exists='append')
+        
 ```
 
 ## Conclusions
